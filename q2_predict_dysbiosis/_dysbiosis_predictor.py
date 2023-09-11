@@ -15,8 +15,8 @@ from q2_types.feature_table import FeatureTable, Frequency, RelativeFrequency
 from q2_predict_dysbiosis._utilities import (_load_file, _load_metadata, _validate_metadata_is_superset)
 
 
-CORE_SPECIES_DEFAULT_FP = pkg_resources.resource_filename('q2-predict-dysbiosis', 'data/core_functions.txt')
-POSITIVE_PAIRS_DEFAULT_FP = pkg_resources.resource_filename('q2-predict-dysbiosis', 'data/positive_pairs.txt')
+CORE_SPECIES_DEFAULT_FP = pkg_resources.resource_filename('q2_predict_dysbiosis', 'data/core_functions.txt')
+POSITIVE_PAIRS_DEFAULT_FP = pkg_resources.resource_filename('q2_predict_dysbiosis', 'data/positive_pairs.txt')
     
 def list_intersection(lst1, lst2):
     lst3 = [value for value in lst1 if value in lst2]
