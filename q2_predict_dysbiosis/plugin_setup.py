@@ -36,7 +36,7 @@ plugin.pipelines.register_function(
     inputs={'table': FeatureTable[Frequency | RelativeFrequency], 'pathways_stratified': FeatureTable[Frequency | RelativeFrequency], 'pathways_unstratified': FeatureTable[Frequency | RelativeFrequency]},
     parameters=basic_parameters,
     outputs=[
-        ('dysbiosis_predictions', FeatureTable[Frequency | RelativeFrequency]), # SampleData[AlphaDiversity]),
+        ('dysbiosis_predictions', FeatureTable[Frequency]) #SampleData[AlphaDiversity]) #FeatureTable[Frequency | RelativeFrequency]), # ),
     ],
     input_descriptions={'table': 'The feature frequency table to calculate '
                                  'Gut Microbiome Health Index from.', 'pathways_stratified': 'The feature frequency table to calculate '

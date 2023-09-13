@@ -10,6 +10,7 @@ import qiime2
 import numpy as np
 import pandas as pd
 import pkg_resources
+import pickle
 
 from q2_types.feature_table import FeatureTable, Frequency, RelativeFrequency
 from q2_predict_dysbiosis._utilities import (_load_file, _load_metadata, _validate_metadata_is_superset)
@@ -17,6 +18,8 @@ from q2_predict_dysbiosis._utilities import (_load_file, _load_metadata, _valida
 
 CORE_SPECIES_DEFAULT_FP = pkg_resources.resource_filename('q2_predict_dysbiosis', 'data/core_functions.txt')
 POSITIVE_PAIRS_DEFAULT_FP = pkg_resources.resource_filename('q2_predict_dysbiosis', 'data/positive_pairs.txt')
+CONTRIBUTIONS_DEFAULT_FP = pkg_resources.resource_filename('q2_predict_dysbiosis', 'data/Top_strat_pathway_contributions_in_healthy.txt')
+classifier_model = pkg_resources.resource_filename('q2_predict_dysbiosis', 'data/rf_model_v1.sav')
     
 def list_intersection(lst1, lst2):
     lst3 = [value for value in lst1 if value in lst2]
@@ -26,6 +29,8 @@ def calculate_index(ctx, table=None, pathways_stratified=None, pathways_unstrati
     
     core = _load_file(CORE_SPECIES_DEFAULT_FP)
     positive_pairs = _load_file(POSITIVE_PAIRS_DEFAULT_FP)
+    contributions = _load_file(CONTRIBUTIONS_DEFAULT_FP)
+    ml_model = pickle.load(open(classifier_model, 'rb'))
 
     # Load and convert feature table (if needed)
     if table.type == FeatureTable[Frequency]:
@@ -57,6 +62,7 @@ def calculate_index(ctx, table=None, pathways_stratified=None, pathways_unstrati
     frac_core_fun_col = []
     frac_core_found_col = []
     spec_found_tog_col = []
+    contributions_col = []
     contr_per_spec_col = []
 
     for sample in sample_list:
@@ -106,6 +112,18 @@ def calculate_index(ctx, table=None, pathways_stratified=None, pathways_unstrati
             pairs_frac = pairs_count/len(positive_pairs)
             sample_row.append(pairs_frac)
             
+            # Found in healthy contributions to pathways
+            ## NOT USED IN THE ACTUAL MODEL ATM
+        
+            sample_paths_strat_nozero = sample_paths_strat.loc[sample_paths_strat != 0]
+            contributions_count = 0
+            
+            for a in list(sample_paths_strat_nozero.index):
+                if a in contributions:
+                    contributions_count += 1
+            contributions_final = contributions_count/len(contributions)
+            sample_row.append(contributions_final)
+                
             # Average number of contributions to all functions per species
             
             all_species = list(sample_taxonomy.index)
@@ -131,7 +149,8 @@ def calculate_index(ctx, table=None, pathways_stratified=None, pathways_unstrati
                 frac_core_fun_col.append(sample_row[3])
                 frac_core_found_col.append(sample_row[4])
                 spec_found_tog_col.append(sample_row[5])
-                contr_per_spec_col.append(sample_row[6])
+                contributions_col.append(sample_row[6])
+                contr_per_spec_col.append(sample_row[7])
             
         except:
             pass
@@ -142,13 +161,22 @@ def calculate_index(ctx, table=None, pathways_stratified=None, pathways_unstrati
     params_df["Frac_of_core_functions_among_all"] = frac_core_fun_col
     params_df["Frac_of_core_functions_found"] = frac_core_found_col
     params_df["Species_found_together"] = spec_found_tog_col
+    params_df["Contributions_to_pathways"] = contributions_col
     params_df["Contributions_per_species"] = contr_per_spec_col
 
+    preds = ml_model.predict_proba(params_df.iloc[:,1:].values)
+    scores_pred = []
+    for a in list(preds):
+        scores_pred.append(a[1])
+
+    scores_pred_df = pd.DataFrame()
+    scores_pred_df['SampleID'] = list(params_df.iloc[:,0])
+    scores_pred_df['Score'] = scores_pred
 
     # Create and return artifact
-    params_artifact = ctx.make_artifact('SampleData[AlphaDiversity]', params_df) #'FeatureTable[Frequency]'
+    scores_pred_df = ctx.make_artifact('SampleData[AlphaDiversity]', params_df) #'FeatureTable[Frequency]'
 
-    return params_artifact
+    return scores_pred_df
 
 '''
 def gmhi_predict_viz(ctx,
