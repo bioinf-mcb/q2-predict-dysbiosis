@@ -1,3 +1,0 @@
-[qiime2.plugins]
-q2-predict-dysbiosis = q2_predict_dysbiosis.plugin_setup:plugin
-

@@ -54,7 +54,6 @@ def calculate_index(ctx, table=None, pathways_stratified=None, pathways_unstrati
 
     sample_list = list_intersection(list(table_df.columns),list(pathways_unstratified_df.columns))
     sample_list = list_intersection(sample_list,list(pathways_stratified_df.columns))
-
     params_df = pd.DataFrame(columns=["Sample","Gupta_good","Gupta_bad","Frac_of_core_functions_among_all","Frac_of_core_functions_found","Species_found_together","Contributions_per_species"])
     sample_col = []
     gupta_good_col = []
@@ -64,8 +63,9 @@ def calculate_index(ctx, table=None, pathways_stratified=None, pathways_unstrati
     spec_found_tog_col = []
     contributions_col = []
     contr_per_spec_col = []
-
+    print(sample_list)
     for sample in sample_list:
+        print(sample)
         sample_row = []
         try:
             sample_taxonomy = table_df[sample]
@@ -142,15 +142,23 @@ def calculate_index(ctx, table=None, pathways_stratified=None, pathways_unstrati
             
             ## Merging all
             
-            if len(sample_row) == 7:
+            if len(sample_row) == 8:
                 sample_col.append(sample_row[0])
+                #print(sample_col)
                 gupta_good_col.append(sample_row[1])
+                #print(gupta_good_col)
                 gupta_bad_col.append(sample_row[2])
+                #print(gupta_bad_col)
                 frac_core_fun_col.append(sample_row[3])
+                #print(frac_core_fun_col)
                 frac_core_found_col.append(sample_row[4])
+                #print(frac_core_found_col)
                 spec_found_tog_col.append(sample_row[5])
+                #print(spec_found_tog_col)
                 contributions_col.append(sample_row[6])
+                #print(contr_per_spec_col)
                 contr_per_spec_col.append(sample_row[7])
+                #print(contr_per_spec_col)
             
         except:
             pass
@@ -163,7 +171,7 @@ def calculate_index(ctx, table=None, pathways_stratified=None, pathways_unstrati
     params_df["Species_found_together"] = spec_found_tog_col
     params_df["Contributions_to_pathways"] = contributions_col
     params_df["Contributions_per_species"] = contr_per_spec_col
-
+    print(params_df)
     preds = ml_model.predict_proba(params_df.iloc[:,1:].values)
     scores_pred = []
     for a in list(preds):
