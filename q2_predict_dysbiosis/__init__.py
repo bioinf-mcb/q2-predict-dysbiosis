@@ -6,10 +6,10 @@
 # The full license is in the file LICENSE, distributed with this software.
 # -----------------------------------------------------------------------------
 
-from ._dysbiosis_predictor import calculate_index
+from ._dysbiosis_predictor import calculate_index, calculate_index_viz
 from ._version import get_versions
 
 __version__ = get_versions()['version']
 del get_versions
 
-__all__ = ['calculate_index']
+__all__ = ['calculate_index','calculate_index_viz']

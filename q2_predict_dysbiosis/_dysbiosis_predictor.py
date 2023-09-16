@@ -40,9 +40,9 @@ def calculate_index(ctx, table=None, pathways_stratified=None, pathways_unstrati
         'Feature table not of the type \'RelativeFrequency\''
 
     # Keep rows as samples, columns as taxonomical species names
-    table_df = table.view(pd.DataFrame)
-    pathways_stratified_df = pathways_stratified.view(pd.DataFrame)
-    pathways_unstratified_df = pathways_unstratified.view(pd.DataFrame)
+    table_df = table.view(pd.DataFrame).T
+    pathways_stratified_df = pathways_stratified.view(pd.DataFrame).T
+    pathways_unstratified_df = pathways_unstratified.view(pd.DataFrame).T
 
     # Consider only species from the full taxonomy
     #table_df.columns = table_df.columns.str.split(';').str[-1].str.strip()
@@ -63,9 +63,8 @@ def calculate_index(ctx, table=None, pathways_stratified=None, pathways_unstrati
     spec_found_tog_col = []
     contributions_col = []
     contr_per_spec_col = []
-    print(sample_list)
+
     for sample in sample_list:
-        print(sample)
         sample_row = []
         try:
             sample_taxonomy = table_df[sample]
@@ -101,7 +100,15 @@ def calculate_index(ctx, table=None, pathways_stratified=None, pathways_unstrati
                     core_found += 1
             core_functions_fraction_in_all = core_found/len(sample_paths_unstrat[sample_paths_unstrat > 0].index)
             core_functions_found = core_found/len(core)
-            sample_row.append(core_functions_found)
+            ##
+            if core_functions_fraction_in_all > 0:
+                sample_row.append(core_functions_fraction_in_all)
+            else:
+                sample_row.append(0)
+            if core_functions_found > 0:
+                sample_row.append(core_functions_found)
+            else:
+                sample_row.append(0)
             
             # Common occurrence of species positively correlated in health in at least 2/3 studies (fraction)
             pairs_count = 0
@@ -122,7 +129,10 @@ def calculate_index(ctx, table=None, pathways_stratified=None, pathways_unstrati
                 if a in contributions:
                     contributions_count += 1
             contributions_final = contributions_count/len(contributions)
-            sample_row.append(contributions_final)
+            if contributions_final > 0:
+                sample_row.append(contributions_final)
+            else:
+                sample_row.append(0)
                 
             # Average number of contributions to all functions per species
             
@@ -138,10 +148,12 @@ def calculate_index(ctx, table=None, pathways_stratified=None, pathways_unstrati
                 if b > 0:
                     contributions_count_nonneg.append(b)
             pathway_contributions_per_species_nonneg = np.mean(contributions_count_nonneg)
-            sample_row.append(pathway_contributions_per_species_nonneg)
+            if pathway_contributions_per_species_nonneg > 0:
+                sample_row.append(pathway_contributions_per_species_nonneg)
+            else:
+                sample_row.append(0)
             
             ## Merging all
-            
             if len(sample_row) == 8:
                 sample_col.append(sample_row[0])
                 #print(sample_col)
@@ -162,7 +174,8 @@ def calculate_index(ctx, table=None, pathways_stratified=None, pathways_unstrati
             
         except:
             pass
-        
+    
+    
     params_df['Sample'] = sample_col
     params_df["Gupta_good"] = gupta_good_col
     params_df["Gupta_bad"] = gupta_bad_col
@@ -171,36 +184,31 @@ def calculate_index(ctx, table=None, pathways_stratified=None, pathways_unstrati
     params_df["Species_found_together"] = spec_found_tog_col
     params_df["Contributions_to_pathways"] = contributions_col
     params_df["Contributions_per_species"] = contr_per_spec_col
-    print(params_df)
+    
     preds = ml_model.predict_proba(params_df.iloc[:,1:].values)
     scores_pred = []
     for a in list(preds):
         scores_pred.append(a[1])
-
+    
+    
     scores_pred_df = pd.DataFrame()
-    scores_pred_df['SampleID'] = list(params_df.iloc[:,0])
+    scores_pred_df['SampleID'] = list(params_df['Sample'])
     scores_pred_df['Score'] = scores_pred
-
+    scores_pred_df = scores_pred_df.set_index('SampleID')
+    
+    score_df = scores_pred_df['Score']
+    score_df.name = "Dysbiosis_score"
     # Create and return artifact
-    scores_pred_df = ctx.make_artifact('SampleData[AlphaDiversity]', params_df) #'FeatureTable[Frequency]'
+    scores_artefact = ctx.make_artifact('SampleData[AlphaDiversity]', score_df) # 'FeatureTable[Frequency]' 
 
-    return scores_pred_df
+    return scores_artefact
+    
 
-'''
-def gmhi_predict_viz(ctx,
-                     table=None,
-                     metadata=None,
-                     healthy_species_fp=None,
-                     non_healthy_species_fp=None,
-                     mh_prime=7,
-                     mn_prime=31,
-                     rel_thresh=0.00001,
-                     log_thresh=0.00001):
 
-    # Calculate GMHI
-    gmhi_artifact = gmhi_predict(ctx, table, healthy_species_fp,
-                                 non_healthy_species_fp, mh_prime, mn_prime,
-                                 rel_thresh, log_thresh)
+def calculate_index_viz(ctx, table=None, metadata=None, pathways_stratified=None, pathways_unstratified=None):
+
+    # Calculate dysbiosis index
+    output_artifact = calculate_index(ctx, table, pathways_stratified, pathways_unstratified)
 
     # Load metadata
     metadata_df = _load_metadata(metadata)
@@ -212,8 +220,6 @@ def gmhi_predict_viz(ctx,
     # Create visualization (box plots) similar to that from alpha-diversity
     get_alpha_diversity_plot = ctx.get_action('diversity',
                                               'alpha_group_significance')
-    gmhi_viz = get_alpha_diversity_plot(alpha_diversity=gmhi_artifact,
-                                        metadata=metadata)
+    dysbiosis_index_viz = get_alpha_diversity_plot(alpha_diversity=output_artifact, metadata=metadata)
 
-    return gmhi_artifact, gmhi_viz[0]
-'''    
+    return output_artifact, dysbiosis_index_viz[0]

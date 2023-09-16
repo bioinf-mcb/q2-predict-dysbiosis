@@ -14,7 +14,7 @@ from q2_types.sample_data import SampleData, AlphaDiversity
 
 import q2_predict_dysbiosis
 
-from q2_predict_dysbiosis._dysbiosis_predictor import calculate_index
+from q2_predict_dysbiosis._dysbiosis_predictor import calculate_index, calculate_index_viz
 
 
 basic_parameters = {}
@@ -38,45 +38,37 @@ plugin.pipelines.register_function(
     outputs=[
         ('dysbiosis_predictions', FeatureTable[Frequency]) #SampleData[AlphaDiversity]) #FeatureTable[Frequency | RelativeFrequency]), # ),
     ],
-    input_descriptions={'table': 'The feature frequency table to calculate '
-                                 'Gut Microbiome Health Index from.', 'pathways_stratified': 'The feature frequency table to calculate '
-                                 'Gut Microbiome Health Index from.', 'pathways_unstratified': 'The feature frequency table to calculate '
-                                 'Gut Microbiome Health Index from.'},
+    input_descriptions={'table': 'The feature frequency table with species', 'pathways_stratified': 'The feature frequency table with stratified pathways','pathways_unstratified': 'The feature frequency table with unstratified pathways'},
     parameter_descriptions=basic_parameters_descriptions,
     output_descriptions={
         'dysbiosis_predictions': 'Calculated GMHI in tabular form.',
     },
-    name='Calculate GMHI',
+    name='Predict dysbiosis',
     description='Calculate Gut Microbial Health Index based on input data. '
 )
 
-'''
+
 plugin.pipelines.register_function(
-    function=gmhi_predict_viz,
-    inputs={
-        'table': FeatureTable[Frequency | RelativeFrequency],
-    },
+    function=calculate_index_viz,
+    inputs={'table': FeatureTable[Frequency | RelativeFrequency], 'pathways_stratified': FeatureTable[Frequency | RelativeFrequency], 'pathways_unstratified': FeatureTable[Frequency | RelativeFrequency]},
+
     parameters={
         **basic_parameters,
         'metadata': Metadata,
     },
     outputs=[
-        ('gmhi_results', SampleData[AlphaDiversity]),
-        ('gmhi_plot', Visualization)
+        ('index_results', SampleData[AlphaDiversity]),
+        ('index_plot', Visualization)
     ],
-    input_descriptions={'table': 'The feature frequency table to calculate '
-                                 'Gut Microbiome Health Index from.',
-                        },
+    input_descriptions={'table': 'The feature frequency table with species', 'pathways_stratified': 'The feature frequency table with stratified pathways','pathways_unstratified': 'The feature frequency table with unstratified pathways'},
     parameter_descriptions={
         **basic_parameters_descriptions,
-        'metadata': 'Metadata used for visualization [REQUIRED].',
+        'metadata': 'Metadata used for dysbiosis prediction visualization.',
     },
     output_descriptions={
-        'gmhi_results': 'Calculated GMHI in tabular form.',
-        'gmhi_plot': 'Bar plot showing calculated GMHI distribution.'
+        'index_results': 'Calculated dysbiosis score in tabular form.',
+        'index_plot': 'Bar plot showing calculated dysbiosis score distribution.'
     },
-    name='Calculate & visualize GMHI',
-    description='Calculate and plot Gut Microbial Health Index based on '
-                'input data and metadata. '
+    name='Calculate & visualize dysbiosis score',
+    description='Calculate and plot dysbiosis predictions.'
 )
-'''
