@@ -88,8 +88,16 @@ Predicted dysbiosis index in tabular form.
 `--o-index_results	ARTIFACT Visualization`  
 Predicted dysbiosis index visualization file.
 
+## Sample use
 
-
+Calculate index:
+```
+qiime predict-dysbiosis calculate-index --i-table test_files/taxonomy.qza --i-pathways-stratified test_files/pathways_stratified.qza --i-pathways-unstratified test_files/pathways_unstratified.qza --o-dysbiosis-predictions results.qza
+```
+Calculate and visualize index:
+```
+qiime predict-dysbiosis calculate-index-viz --i-table test_files/taxonomy.qza --i-pathways-stratified test_files/pathways_stratified.qza --i-pathways-unstratified test_files/pathways_unstratified.qza --m-metadata-file test_files/metadata.txt --o-index-results results.qza --o-index-plot visualization.qzv
+```
 ## Acknowledgements
 
 We would like to acknowledge the Authors of the q2-health-index plugin, whose scripts formed the foundation of our work. 
