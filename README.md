@@ -29,7 +29,7 @@ Note that the plugin was tested with `qiime2-2022.2` .
   
 - Test plugin e.g.: `qiime predict-dysbiosis --help`
 
-**Input prep:**
+## Input prep:
 
 Sample inputs can be found in the "test_data" folder.
 
@@ -62,9 +62,6 @@ Abundance table artifact on which GMHI will be computed.
 **Outputs:**
 
 `--o-gmhi-results	ARTIFACT SampleData[AlphaDiversity]` Predicted GMHI in tabular form.
-
-
-
 
 
 ## Acknowledgements
