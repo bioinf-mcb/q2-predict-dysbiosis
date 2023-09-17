@@ -87,10 +87,10 @@ Predicted dysbiosis index in tabular form.
 
 `--o-index_results	ARTIFACT Visualization`  
 Predicted dysbiosis index visualization file.
-
+ 
 ## Sample use
 
-Calculate index:
+Calculate index: 
 ```
 qiime predict-dysbiosis calculate-index --i-table test_files/taxonomy.qza --i-pathways-stratified test_files/pathways_stratified.qza --i-pathways-unstratified test_files/pathways_unstratified.qza --o-dysbiosis-predictions results.qza
 ```
