@@ -40,6 +40,7 @@ Sample inputs can be found in the "test_data" folder.
 
 The values in all tables should be expressed as relative abundance.
 
+## Predict dysbiosis index
 **Usage:** `qiime predict-dysbiosis calculate-index [OPTIONS]`  
 Dysbiosis index predicts the gut microbiome health index for each sample in the abundance table. 
 
@@ -58,6 +59,34 @@ Abundance table artifact with unstratified pathways.
 
 `--o-dysbiosis-predictions	ARTIFACT SampleData[AlphaDiversity]`  
 Predicted dysbiosis index in tabular form.
+
+## Predict and visualize dysbiosis index
+
+**Usage:** `qiime predict-dysbiosis calculate-index-viz [OPTIONS]`  
+Dysbiosis index predicts the gut microbiome health index for each sample in the abundance table. 
+
+**Inputs:**  
+
+`--i-table	ARTIFACT	FeatureTable[RelativeFrequency]`  
+Abundance table artifact with taxonomy collapsed to species level.
+
+`--i-pathways-stratified	ARTIFACT	FeatureTable[RelativeFrequency]`  
+Abundance table artifact with stratified pathways.
+
+`--i-pathways-unstratified	ARTIFACT	FeatureTable[RelativeFrequency]`  
+Abundance table artifact with unstratified pathways.
+
+`--m-metadata-file	ARTIFACT`  
+Metadata file.
+
+**Outputs:**
+
+`--o-index_results	ARTIFACT SampleData[AlphaDiversity]`  
+Predicted dysbiosis index in tabular form.
+
+`--o-index_results	ARTIFACT Visualization`  
+Predicted dysbiosis index visualization file.
+
 
 
 ## Acknowledgements
