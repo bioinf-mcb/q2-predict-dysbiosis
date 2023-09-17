@@ -23,7 +23,7 @@ Note that the plugin was tested with `qiime2-2022.2` .
     ```
 - Install plugin:
     ```
-    pip install -e
+    pip install -e .
     python setup.py install
     ```
   
