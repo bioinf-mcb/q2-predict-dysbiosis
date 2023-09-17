@@ -48,15 +48,16 @@ Dysbiosis index predicts the gut microbiome health index for each sample in the 
 `--i-table	ARTIFACT	FeatureTable[RelativeFrequency]`  
 Abundance table artifact with taxonomy collapsed to species level.
 
-`--i-pathways-stratified	ARTIFACT	FeatureTable[RelativeFrequency]`
+`--i-pathways-stratified	ARTIFACT	FeatureTable[RelativeFrequency]`  
 Abundance table artifact with stratified pathways.
 
-`--i-pathways-unstratified	ARTIFACT	FeatureTable[RelativeFrequency]`
+`--i-pathways-unstratified	ARTIFACT	FeatureTable[RelativeFrequency]`  
 Abundance table artifact with unstratified pathways.
 
 **Outputs:**
 
-`--o-dysbiosis-predictions	ARTIFACT SampleData[AlphaDiversity]` Predicted dysbiosis index in tabular form.
+`--o-dysbiosis-predictions	ARTIFACT SampleData[AlphaDiversity]`  
+Predicted dysbiosis index in tabular form.
 
 
 ## Acknowledgements
