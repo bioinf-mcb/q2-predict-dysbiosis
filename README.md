@@ -1,6 +1,6 @@
 # q2-predict-dysbiosis
 
-QIIME 2 plugin for calculating the dysbiosis score from gut microbiome data. 
+QIIME 2 plugin for calculating dysbiosis score from gut microbiome data. 
 
 ## Installation
 
@@ -40,28 +40,23 @@ Sample inputs can be found in the "test_data" folder.
 
 The values in all tables should be expressed as relative abundance.
 
-**Usage:** `qiime health-index gmhi-predict [OPTIONS]`  
+**Usage:** `qiime predict-dysbiosis calculate-index [OPTIONS]`  
 Dysbiosis index predicts the gut microbiome health index for each sample in the abundance table. 
 
 **Inputs:**  
 
-`--i-table	ARTIFACT	FeatureTable[Frequency] or FeatureTable[RelativeFrequency]`  
-Abundance table artifact on which GMHI will be computed.
+`--i-table	ARTIFACT	FeatureTable[RelativeFrequency]`  
+Abundance table artifact with taxonomy collapsed to species level.
 
-**Parameters:**  
+`--i-pathways-stratified	ARTIFACT	FeatureTable[RelativeFrequency]`
+Abundance table artifact with stratified pathways.
 
-| Parameter   |  Type  |  Optional / required / default      |  Description |
-|:-----|:-----:|:-------------:|:------|
-| `--p-healthy-species-fp` | TEXT |  optional | Path to file with healthy species (taxonomy is based on MetaPhlAn 2). |
-| `--p-non-healthy-species-fp` | TEXT |    optional   |   Path to file with non-healthy species (taxonomy is based on MetaPhlAn 2). |
-| `--p-mh-prime`  | INTEGER | default: 7 |  Median from the top 1% healthy samples in training dataset (see Gupta et al. 2020 Methods section). |
-| `--p-rel-thresh` | NUMBER  | default: 1e-05 | Median from the top 1% non-healthy samples in training dataset (see Gupta et al. 2020 Methods section).  |
-| `--p-rel-thresh` | NUMBER | default: 1e-05 | Relative frequency based threshold for discarding insignificant OTU. |
-| `--p-log-thresh` | NUMBER | default: 1e-05 | Normalization value for `log10` in the last step of GMHI calculation.  |
+`--i-pathways-unstratified	ARTIFACT	FeatureTable[RelativeFrequency]`
+Abundance table artifact with unstratified pathways.
 
 **Outputs:**
 
-`--o-gmhi-results	ARTIFACT SampleData[AlphaDiversity]` Predicted GMHI in tabular form.
+`--o-dysbiosis-predictions	ARTIFACT SampleData[AlphaDiversity]` Predicted dysbiosis index in tabular form.
 
 
 ## Acknowledgements
