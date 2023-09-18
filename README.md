@@ -1,6 +1,6 @@
 # q2-predict-dysbiosis
 
-QIIME 2 plugin for calculating dysbiosis score from gut microbiome data. 
+QIIME 2 plugin for calculating dysbiosis score from gut microbiome data. A greater score indicates bettern health.
 
 ## Installation
 
