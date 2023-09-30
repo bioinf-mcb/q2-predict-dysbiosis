@@ -71,7 +71,26 @@ def calculate_index(ctx, table=None, pathways_stratified=None, pathways_unstrati
             sample_paths_strat = pathways_stratified_df[sample]
             sample_paths_unstrat = pathways_unstratified_df[sample]
             
-            sample_row.append(sample)
+            sample_paths_unstrat_cumsum = pd.DataFrame(data = list(sample_paths_unstrat), columns=['sample'], index=sample_paths_unstrat.index).sort_values(by='sample', ascending=True)
+            sample_paths_unstrat_cumsum['cumsum'] = sample_paths_unstrat_cumsum['sample'].cumsum()
+            sample_paths_unstrat_cumsum = sample_paths_unstrat_cumsum.loc[sample_paths_unstrat_cumsum['cumsum'] > 0]
+            sample_paths_unstrat = sample_paths_unstrat_cumsum.loc[sample_paths_unstrat_cumsum['cumsum'] > 0.00001].drop('cumsum', axis=1)
+            
+            sample_paths_strat_cumsum = pd.DataFrame(data = list(sample_paths_strat), columns=['sample'], index=sample_paths_strat.index).sort_values(by='sample', ascending=True)
+            sample_paths_strat_cumsum['cumsum'] = sample_paths_strat_cumsum['sample'].cumsum()
+            sample_paths_strat_cumsum = sample_paths_strat_cumsum.loc[sample_paths_strat_cumsum['cumsum'] > 0]
+            sample_paths_strat = sample_paths_strat_cumsum.loc[sample_paths_strat_cumsum['cumsum'] > 0.001].drop('cumsum', axis=1)
+            
+            
+            sample_taxonomy_cumsum = pd.DataFrame(data = table_df[sample])
+            sample_taxonomy_cumsum.columns=['sample']
+            sample_taxonomy_cumsum = sample_taxonomy_cumsum.sort_values(by='sample', ascending=True)
+            sample_taxonomy_cumsum['cumsum'] = sample_taxonomy_cumsum['sample'].cumsum()
+            sample_taxonomy_cumsum = sample_taxonomy_cumsum.loc[sample_taxonomy_cumsum['cumsum'] != 0]
+            sample_taxonomy_cumsum = sample_taxonomy_cumsum.loc[sample_taxonomy_cumsum['cumsum'] > 0.1].drop('cumsum', axis=1)
+            sample_taxonomy_cumsum.columns = [sample]
+            sample_taxonomy = sample_taxonomy_cumsum[sample]
+        
             
             # Calculate index
             
