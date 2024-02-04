@@ -7,7 +7,7 @@
 # -----------------------------------------------------------------------------
 
 
-from qiime2.plugin import (Int, Str, Float, Plugin, Citations, Metadata,
+from qiime2.plugin import (Int, Str, Float, Plugin, Metadata,
                            Visualization)
 from q2_types.feature_table import FeatureTable, Frequency, RelativeFrequency
 from q2_types.sample_data import SampleData, AlphaDiversity
