@@ -26,7 +26,7 @@ plugin = Plugin(
     version=q2_predict_dysbiosis.__version__,
     website='https://github.com/Kizielins/q2-predict-dysbiosis',
     package='q2_predict_dysbiosis',
-    citations=Citations.load('citations.bib', package='q2_predict_dysbiosis'),
+    #citations=Citations.load('citations.bib', package='q2_predict_dysbiosis'),
     description=('This QIIME 2 plugin predicts the degree of dysbiosis in human gut microbiome samples.'),
     short_description='Human gut microbiome dysbiosis predictor.'
 )
