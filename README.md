@@ -97,6 +97,9 @@ Calculate and visualize index:
 ```
 qiime predict-dysbiosis calculate-index-viz --i-table test_files/taxonomy.qza --i-pathways-stratified test_files/pathways_stratified.qza --i-pathways-unstratified test_files/pathways_unstratified.qza --m-metadata-file test_files/metadata.txt --o-index-results results.qza --o-index-plot visualization.qzv
 ```
+
+Both commands should take a few minutes to run, depending on the size of your input (~30s per sample).
+
 ## Acknowledgements
 
 We would like to acknowledge the Authors of the q2-health-index plugin, whose scripts formed the foundation of our work. 
