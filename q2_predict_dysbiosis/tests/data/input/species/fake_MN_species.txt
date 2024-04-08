@@ -1,3 +1,0 @@
-s__fake_non_1
-s__fake_non_2
-s__fake_non_3

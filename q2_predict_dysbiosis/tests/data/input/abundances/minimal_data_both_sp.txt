@@ -1,3 +1,0 @@
-	Sample1
-s__Bifidobacterium_adolescentis	0.2344
-s__Clostridium_hathewayi	0.321
