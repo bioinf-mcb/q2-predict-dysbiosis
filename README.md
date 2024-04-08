@@ -6,7 +6,7 @@ QIIME 2 plugin for calculating dysbiosis score from gut microbiome data. A great
 
 To install the most up to date version of the plugin:
 
-- Install and activate conda environment with QIIME 2 (see [docs](https://docs.qiime2.org/2020.11/install/native/)), e.g. for Linux 64-bit. Note that this plugin is currently only available in the QIIME 2 dev version:
+- Install and activate conda environment with QIIME 2 (see [docs](https://docs.qiime2.org/2020.11/install/native/)), e.g. for Linux 64-bit. Note that this plugin is currently only available in the QIIME 2 dev version. This should only take a few minutes:
     ```
     wget https://raw.githubusercontent.com/qiime2/environment-files/master/latest/staging/qiime2-latest-py38-linux-conda.yml
     conda env create -n qiime2-dev --file qiime2-latest-py38-linux-conda.yml
@@ -27,7 +27,6 @@ Note that the plugin was tested with `qiime2-2022.2` .
     pip install -e .
     python setup.py install
     ```
-  
 - Test plugin e.g.: `qiime predict-dysbiosis --help`
 
 ## Input prep:
