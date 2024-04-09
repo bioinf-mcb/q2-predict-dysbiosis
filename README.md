@@ -100,6 +100,12 @@ qiime predict-dysbiosis calculate-index-viz --i-table test_files/taxonomy.qza --
 
 Both commands should take a few minutes to run, depending on the size of your input (~30s per sample).
 
+## Original publication / citation
+
+If you want to learn more about this method, or to cite it, please refer to our article: https://www.biorxiv.org/content/10.1101/2023.12.04.569909v4
+A full script to reproduce all figures in the article will be available shortly.
+
+
 ## Acknowledgements
 
 We would like to acknowledge the Authors of the q2-health-index plugin, whose scripts formed the foundation of our work. 
