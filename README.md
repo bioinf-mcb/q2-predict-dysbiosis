@@ -103,6 +103,7 @@ Both commands should take a few minutes to run, depending on the size of your in
 ## Original publication / citation
 
 If you want to learn more about this method, or to cite it, please refer to our article: https://www.biorxiv.org/content/10.1101/2023.12.04.569909v4
+
 A full script to reproduce all figures in the article will be available shortly.
 
 
