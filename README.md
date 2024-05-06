@@ -11,7 +11,6 @@ To install the most up to date version of the plugin:
     wget https://raw.githubusercontent.com/qiime2/environment-files/master/latest/staging/qiime2-latest-py38-linux-conda.yml
     conda env create -n qiime2-dev --file qiime2-latest-py38-linux-conda.yml
     rm qiime2-latest-py38-linux-conda.yml
-    source activate qiime2-2022.2
     conda activate qiime2-dev
     qiime info
     ```
