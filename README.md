@@ -1,5 +1,18 @@
 # q2-predict-dysbiosis
 
+This has now moved to: https://github.com/Kizielins/q2-predict-dysbiosis/tree/master
+
+
+
+
+
+
+
+
+
+
+
+###
 QIIME 2 plugin for calculating dysbiosis score from gut microbiome data. A greater score indicates better health.
 
 ## Installation
