@@ -1,6 +1,6 @@
-# q2-predict-dysbiosis
+# NOTE !!!
 
-This has now moved to: https://github.com/Kizielins/q2-predict-dysbiosis/tree/master
+This has been temporarily moved to: https://github.com/Kizielins/q2-predict-dysbiosis/tree/master
 
 
 
